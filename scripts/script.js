@@ -438,6 +438,7 @@ document.addEventListener("DOMContentLoaded", () => {
             });
 
             buildTask(object.date);
+            console.log();
         });
 
 
