@@ -28,6 +28,7 @@ document.addEventListener("DOMContentLoaded", () => {
           task__time__OK__button = document.querySelector("#task__time__OK__button");
 
     let object = {
+        id: "",
         name: "New task",
         color: "blue",
         date: "",
@@ -36,6 +37,19 @@ document.addEventListener("DOMContentLoaded", () => {
         notification_1hour: "",
         notification_1day: ""
     }
+
+        let localData = [];
+        const updateLocalData = () => {
+            localData = [];
+            for (let i = 0; i <= localStorage.getItem('index'); i++) {
+                if (JSON.parse(localStorage.getItem(`task${i}`))) {
+                    localData.push(JSON.parse(localStorage.getItem(`task${i}`)));
+                }
+            }
+        }
+        updateLocalData();
+
+
         let day = new Date().getDate(),
         month = new Date().getMonth() + 1;
         year = new Date().getFullYear();
@@ -76,14 +90,14 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     const buildTask = (clickedDay) => {
-        content.innerHTML = "<h1>Loading...</h1>";
+        updateLocalData();
         document.querySelectorAll(".task").forEach(item => {
             item.remove();
         });
-        getResource('http://localhost:3000/requests')
-        .then(data => {
-            content.innerHTML = "";
-            data.forEach(({date, time, name, color, notification_10min, notification_1hour, notification_1day, id}) => {
+        // getResource('http://localhost:3000/requests')
+        // .then(data => {
+        //     data.forEach(({date, time, name, color, notification_10min, notification_1hour, notification_1day, id}) => {
+            localData.forEach(({date, time, name, color, notification_10min, notification_1hour, notification_1day, id}) => {        
                 if (date == clickedDay) {
                     task = document.createElement("div");
                     task.setAttribute("class", "task");
@@ -153,15 +167,24 @@ document.addEventListener("DOMContentLoaded", () => {
                     });        
 
                     task.querySelector(".delete").addEventListener("click", () => {
-                        fetch(`http://localhost:3000/requests/${id}/`, {
-                            method: 'DELETE',
-                        });
-                        task.remove();
-                        buildCalendar();
+                        localData.forEach(({id}) => {
+                            if (id == task.querySelector(".id").innerHTML) {
+                                localStorage.removeItem(`task${id}`);
+                                //task.remove();
+                                updateLocalData();
+                                buildCalendar();
+                                console.log(localData);
+                            }
+                        })
+                        // fetch(`http://localhost:3000/requests/${id}/`, {
+                        //     method: 'DELETE',
+                        // });
+                        // task.remove();
+                        // buildCalendar();
                     });
                 }
             });
-        });
+        //};
     }
 
     addButton.addEventListener("click", () => {    
@@ -235,14 +258,55 @@ document.addEventListener("DOMContentLoaded", () => {
                 });
             }
 
-            postData("http://localhost:3000/requests", JSON.stringify(object))
-            .then(() => {
-                buildCalendar();
+            // let task = {
+            //     "name": "New task",
+            //     "color": "blue",
+            //     "date": "20.01.2021",
+            //     "time": "08:00",
+            //     "notification_10min": "checked",
+            //     "notification_1hour": "",
+            //     "notification_1day": "",
+            //     "id": 16
+            // }
+
+            // let localData = JSON.parse(localStorage.getItem('tasks'));
+            // if (localData != null) {
+            //     localData.push(object);
+            // }
+            // else {
+            //     localData = [object];
+            // }
+            // localStorage.setItem("tasks", JSON.stringify(localData));
+
+            let index = localStorage.getItem('index');
+
+            if (index != null) {
+                index++;
+            }
+            else {
+                index = 0;
+            }
+            localStorage.setItem('index', index);
+
+            object.id = index;
+
+            localStorage.setItem(`task${index}`, JSON.stringify(object));
+
+            buildCalendar();
+
+            set__task__color.classList.toggle("hide");
+            add__task__window__wrapper.classList.toggle("hide");
+            main.classList.toggle("hide");
+
+
+            // postData("http://localhost:3000/requests", JSON.stringify(object))
+            // .then(() => {
+            //     buildCalendar();
     
-                set__task__color.classList.toggle("hide");
-                add__task__window__wrapper.classList.toggle("hide");
-                main.classList.toggle("hide");
-            })
+            //     set__task__color.classList.toggle("hide");
+            //     add__task__window__wrapper.classList.toggle("hide");
+            //     main.classList.toggle("hide");
+            // })
 
         });
 
@@ -269,9 +333,10 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function buildCalendar () {
+        updateLocalData();
 
-        getResource('http://localhost:3000/requests')
-        .then(data => {
+        // getResource('http://localhost:3000/requests')
+        // .then(data => {
             let mm = currentDate.getMonth(),
             yy = currentDate.getFullYear(),
             dd = currentDate.getDate(),
@@ -389,7 +454,8 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         
             //BACKEND
-            data.forEach(({date, time, name, color, notification_10min, notification_1hour, notification_1day}) => {
+            // data.forEach(({date, time, name, color, notification_10min, notification_1hour, notification_1day}) => {
+            localData.forEach(({date, time, name, color, notification_10min, notification_1hour, notification_1day}) => { 
                 let day = date.split(".")[0];
                 //day = +day < 10 ? "0" + day : day;
                 let month = date.split(".")[1];
@@ -439,7 +505,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             buildTask(object.date);
             console.log();
-        });
+        //});
 
 
     };

@@ -1,0 +1,566 @@
+    /* <WebView
+    android:id="@+id/webview"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" />
+</RelativeLayout>
+
+WebView web = (WebView)findViewById(R.id.webview);
+web.getSettings().setJavaScriptEnabled(true);
+web.setWebChromeClient(new WebChromeClient());
+web.loadUrl("file:///android_asset/www/index.html"); */
+
+* {
+    scroll-behavior: smooth;
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+body {
+    max-width: 425px;
+    margin: 0 auto;
+    overflow-x: hidden;
+    box-sizing: border-box;
+    font-weight: 400;
+    min-height: 100vh;
+
+    /* background-blend-mode: luminosity; */
+    /* background-blend-mode: difference; */
+    /* background-blend-mode: color; */
+
+    backdrop-filter: blur(100px);
+}
+
+.bright {
+    background-color: white;
+    color: black;
+}
+
+.dark {
+    background-color: black;
+    color: rgb(190, 190, 190);
+}
+
+button {
+    background-color: rgba(255, 255, 255, 0.287);
+    outline: none;
+    border: 1px solid rgb(97, 97, 97);
+    border-radius: 5px;
+    padding: 10.5px;
+    width: 75px;
+
+    font-weight: 700;
+}
+
+a {
+    text-decoration: none;
+}
+
+    .glass {
+        box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
+        background:rgba(255, 255, 255, 0.377);
+        border-top: 1px solid rgba(255, 255, 255, 1);
+        border-left: 1px solid rgba(255, 255, 255, 1);
+        backdrop-filter: blur(10px);
+    }
+
+    .darkGlass {
+        background:rgba(255, 255, 255, 0.103);
+        border: 1px solid rgba(255, 255, 255, 0.5);
+    }
+
+    /* .brightMode {
+        background-color: #adadad;
+        color: black;
+    }*/
+
+    .darkMode {
+        color: rgb(211, 211, 211);
+    } 
+
+    /* TASK BOX */
+
+    
+    .taskBox {
+        height: 300px;
+        padding-top: 8px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        position: relative;
+    }
+
+    .taskBox h2 {
+        position: absolute;
+        top: 10px;
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    /* SET TASK NAME */
+
+    #closeButton {
+        position: absolute;
+        top: 20px;
+        right: 25px;
+        z-index: 2;
+        font-size: 20px;
+        color: black;
+    }
+
+    .backButton {
+        position: absolute;
+        top: 10px;
+        left: 15px;
+        font-size: 20px;
+        font-weight: 700;
+    }
+
+    .set__task__name #name {
+        background: none;
+        outline: none;
+        border: none;
+        border-bottom: 1px solid black;
+        /* border: 1px solid rgb(167, 167, 167); */
+        /* -webkit-box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.5);
+        -moz-box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.5);
+        box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.5); */
+        padding: 10px;
+        height: 18px;
+        width: 200px;
+
+        font-weight: 700;
+        font-size: 18px;
+        text-align: center;
+
+        margin-top: 20px;
+        margin-bottom: 40px;
+    }
+
+    .set__task__name .whitePlaceholder::placeholder {
+        color: white;
+    }
+
+    .set__task__name .blackPlaceholder::placeholder {
+        color: black;
+    }
+
+    .set__task__name #name::placeholder {
+        text-align: center;
+        font-weight: 700;
+        font-size: 18px;
+    }
+
+    /* SET TASK COLOR */
+
+    .set__task__color table {
+        width: 240px;
+        border-spacing: 20px;
+    }
+ 
+    .set__task__color th {
+        padding: 30px;
+        overflow: hidden;
+        border-radius: 50px;
+        opacity: 0.9;
+        border-top: 1px solid rgba(255, 255, 255, 0.8);
+        border-left: 1px solid rgba(255, 255, 255, 0.8);
+        position: relative;
+        box-shadow: 3px 3px 3px black;
+    }
+
+    .set__task__color th::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(120deg, #ffffff2d, #0000005e);
+   }
+
+    /* SET TASK TIME */
+    .set__task__time {
+        align-items: center;
+        border-radius: 5px;
+    }
+
+    .set__task__time div {
+        padding: 10px;
+    }
+
+    .set__task__time h2{
+        text-align: center;
+        margin-bottom: 15px;
+    }
+
+    .set__task__time .clock {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        margin: 15px;
+
+        font-size: 40px;
+        font-weight: 700;
+    }
+
+        .clock .hours {
+            border: 1px solid rgb(119, 119, 119);
+            background-color: rgba(255, 255, 255, 0.315);
+            border-radius: 5px;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .clock .minutes {
+            border: 1px solid rgb(119, 119, 119);
+            background-color: rgba(255, 255, 255, 0.315);
+            border-radius: 5px;
+            padding: 10px;
+            text-align: center;
+        }
+
+
+/* TASKS */
+.header { grid-area: header;}
+.main { grid-area: main;}
+.right { grid-area: right;}
+.buttons { grid-area: footer;}
+
+.task {
+    position: relative;
+
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    background-color: rgb(219, 216, 216);
+
+    margin-bottom: 10px;
+    display: grid;
+    grid-template-areas:
+        'header header header header header header'
+        'main main main main right right';
+
+
+    overflow: hidden;
+
+    transition: max-height .3s ease;
+
+    height: 263px;
+    max-height: 55px;
+}
+
+.expanded {
+    max-height: 263px;
+}
+
+.task > div {
+    padding: 10px;
+}
+
+.task .header {
+    font-size: 16px;
+    font-weight: 600;
+    padding: 15px;
+
+    display: grid;
+    grid-template-areas:
+        "taskName taskName taskName taskName taskName taskName taskName taskName taskName taskTime taskDate"
+}
+
+    .taskName { grid-area: taskName;}
+    .taskTime { grid-area: taskTime;}
+    .taskDate { grid-area: taskDate;}
+
+
+.task .taskColor {
+    position: absolute;
+    left: 10px;
+    top: 15px;
+
+    width: 15px;
+    height: 15px;
+    border-radius: 45px;
+    border-color: rgb(110, 110, 110);
+    margin-right: 10px;
+    transform: translateY(5px);
+}
+
+.task .taskName {
+    margin-left: 25px;
+    flex: 30%;
+    text-align: left;
+}
+
+.task .taskTime {
+    flex: 30%;
+    text-align: right;
+}
+
+.task .taskDate {
+    text-align: right;
+}
+
+.task .main {
+    padding-right: 2px;
+}
+
+.task textarea {
+    padding: 10px;
+    width: calc(100% - 20px);
+    height: 121px;
+    margin-bottom: 5px;
+    border-radius: 5px;
+
+    background-color: rgb(255, 255, 255);
+    border: 1px solid black;
+    outline: none;
+
+    font-size: 16px;
+    font-weight: 400;
+}
+
+.task .buttons {
+    display: flex;
+    justify-content: space-between;
+}
+
+.task .buttons button {
+    width: 30%;
+
+    border-radius: 5px;
+    background-color: rgb(255, 255, 255);
+    border: 1px solid black;
+}
+
+
+.task .notifications {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+
+    height: 100%;
+
+    border-radius: 5px;
+    background-color: rgb(255, 255, 255);
+    border: 1px solid black;
+
+    font-size: 16px;
+    text-align: center;
+}
+
+.task .notifications p {
+    padding: 5px;
+}
+
+.task .notifications .switch {
+    width: 40px;
+    display: inline-block;
+    position: relative;
+
+    margin-bottom: 10px;
+}
+
+.task .notifications .switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.task .notifications .slider {
+    position: absolute;
+    left: 0;
+    top: 0;
+
+    width: 40px;
+    height: 21px;
+
+    border-radius: 15px;
+    border: 1px solid rgba(0, 0, 0, 0.37);
+
+    background-color: grey;
+
+    transition: .3s ease;
+}
+
+.task .notifications .slider::before {
+    display: inline-block;
+    content: "";
+
+    position: absolute;
+    left: 3px;
+    top: 3px;
+
+    width: 15px;
+    height: 15px;
+    border-radius: 15px;
+    background-color: white;
+
+    transition: .3s ease;
+}
+
+.task .notifications .switch input:checked + .slider {
+    background-color: red;
+}
+
+.task .notifications .switch input:checked + .slider::before {
+    transform: translate(19px);
+} 
+
+
+
+
+
+
+.hide {
+    display: none;
+}
+
+    footer {
+        padding-bottom: 10px;
+        position: absolute;
+        bottom: 0;
+
+        text-align: center;
+
+        width: 100%;
+    }
+
+/* CALENDAR */
+
+.calendar {
+    border-radius: 5px;
+    margin-bottom: 10px;
+    font-weight: 700;
+    font-size: 16px;
+}
+
+.calendarHeader {
+    background-color: rgb(212, 212, 212);
+    display: flex;
+    justify-content: space-between;
+
+    padding: 10px;
+}
+
+.calendarHeader img {
+    height: 20px;
+}
+
+.calendarFooter {
+    background-color: rgb(212, 212, 212);
+    margin-top: -5px;
+    text-align: center;
+
+    padding: 10px;
+}
+
+.calendarFooter #addButton {
+    width: 100%;
+    padding: 5px;
+}
+
+.calendar__previousMonth {
+    text-align: left;
+}
+
+.calendar__currentMonth {
+    text-align: center;
+}
+
+.calendar__nextMonth {
+    text-align: right;
+}
+
+.days {
+    position: relative;
+
+    width: 100%;
+    height: 280px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin-top: 20px;
+}
+
+.days div {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: left;
+    overflow: hidden;
+
+    padding-top: 5px;
+    width: 14%;
+    height: 40px;
+}
+
+.calendar__previousMonthDay,
+.calendar__nextMonthDay {
+    color: rgb(82, 80, 80);
+    z-index: 1;
+}
+
+.days .line {
+    top: 5px;
+    margin: 1px;
+    padding: 0;
+    width: 80%;
+    height: 2px;
+    z-index: -1;
+}
+
+.today {
+    color: white;
+}
+
+.today::before {
+    content: "";
+    position: absolute;
+    margin: 4px;
+    margin-bottom: 15px;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -1;
+    border-radius: 5px;
+    background-color: green;
+}
+
+.calendar__activeDay::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    border: 2px solid green;
+    border-radius: 5px;
+
+}
+
+.calendar__weekdays {
+    padding: 3px 0px 7px;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    text-align: center;
+    margin-top: 5px;
+}
+
+.calendar__weekdays div {
+    height: 20px;
+    width: 14%;
+}
+
+.content h1 {
+    text-align: center;
+}
+
