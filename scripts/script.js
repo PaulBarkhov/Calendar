@@ -172,7 +172,7 @@ document.addEventListener("DOMContentLoaded", () => {
                                 localStorage.removeItem(`task${id}`);
                                 //task.remove();
                                 updateLocalData();
-                                buildCalendar();
+                                buildCalendar(monthIndex);
                                 console.log(localData);
                             }
                         })
@@ -292,7 +292,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             localStorage.setItem(`task${index}`, JSON.stringify(object));
 
-            buildCalendar();
+            buildCalendar(monthIndex);
 
             set__task__color.classList.toggle("hide");
             add__task__window__wrapper.classList.toggle("hide");
@@ -322,6 +322,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const calendar__currentMonth = document.querySelector(".calendar__currentMonth"),
           calendar__previousMonth = document.querySelector(".calendar__previousMonth"),
           calendar__nextMonth = document.querySelector(".calendar__nextMonth"),
+          calendarBody = document.querySelector(".calendarBody"),
           days = document.querySelector(".days");
 
     const getResource = async (url) => {
@@ -332,80 +333,79 @@ document.addEventListener("DOMContentLoaded", () => {
         return await res.json();
     }
 
-    function buildCalendar () {
+    function buildCalendar (n) {
         updateLocalData();
 
-        // getResource('http://localhost:3000/requests')
-        // .then(data => {
-            let mm = currentDate.getMonth(),
-            yy = currentDate.getFullYear(),
-            dd = currentDate.getDate(),
+        document.querySelectorAll(".block").forEach(item => {item.remove()});
 
-            currentMonth = months[mm];
 
-            let lastDay = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0).getDate(),
-                lastDayIndex = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0).getDay(),
-                firstDayIndex = currentDate;
-                                firstDayIndex.setDate(1); 
-                                firstDayIndex = firstDayIndex.getDay();
-
-            let prevMonthLastDay = new Date(currentDate.getFullYear(), currentDate.getMonth(), 0).getDate();
-
-            nextMonth = months[months.indexOf(currentMonth) + 1];
-            previousMonth = months[months.indexOf(currentMonth) - 1];
-
-            if (currentMonth == "Januar") {
-                previousMonth = months[11];
-            }
-            if (currentMonth == "December") {
-                nextMonth = months[0];
-            }
-
-            calendar__currentMonth.innerHTML = `${currentMonth} ${yy}`;
-            calendar__previousMonth.innerHTML = `< ${previousMonth.slice(0,3)}`;
-            calendar__nextMonth.innerHTML = `${nextMonth.slice(0,3)} >`;
-
-            days.querySelectorAll("div").forEach(item => {item.remove()});
-
-            if (firstDayIndex == 0) { firstDayIndex = 7};
-
+        // console.log(`current date is: ${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`);
+    
+        for (let j = -1; j < 2; j++) {
+            let d = new Date();
+    
+            d.setDate(1);
+            d.setMonth(d.getMonth() + n + j);
+    
+            const month = months[d.getMonth()],
+                  year = d.getFullYear();   
+        
+            const firstDayIndex = d.getDay() == 0 ? 7 : d.getDay();
+        
+            const previousMonthLastDay = d.getDate(d.setDate(0));
+                  d.setDate(1);
+        
+                  d.setMonth(d.getMonth() + 2);
+            const currentMonthLastDay = d.getDate(d.setDate(0));
+        
+            const block = document.createElement("div");
+            block.classList.add("block");
+            block.innerHTML = `<div><h1>${month} ${year}</h1></div>`;
+            calendarBody.append(block);
+    
+            const days = document.createElement("div");
+            days.classList.add("days");
+            block.append(days);
+    
             if (firstDayIndex == 1) {
                 for (i = 7; i > 0; i--) {
-                    days.innerHTML += `<div><p class="calendar__previousMonthDay day">${prevMonthLastDay - i + 1}</p></div>`;
+                    days.innerHTML += `<div><p class="calendar__previousMonthDay day">${previousMonthLastDay - i + 1}</p></div>`;
                 };
             }
-            else {
-                for (i = firstDayIndex - 1; i > 0; i--) {
-                    days.innerHTML += `<div><p class="calendar__previousMonthDay day">${prevMonthLastDay - i + 1}</p></div>`;
-                }; // adds previous month`s days to start
+        
+            for (let i = firstDayIndex - 1; i > 0; i--) {
+                days.innerHTML += `<div><p class="day calendar__previousMonthDay">${previousMonthLastDay - i + 1}</p></div>`;
             }
-
-            for (i = 1; i <= lastDay; i++) {
-                days.innerHTML += `<div><p class="calendar__actualMonth day">${i}</p></div>`;
-            };  // add all days
-
-            if (days.querySelectorAll("div").length < 42) {
-                let x = 42 - days.querySelectorAll("div").length;
-                for (i = 1; i <= x; i++) {
-                    days.innerHTML += `<div><p class="calendar__nextMonthDay day">${i}</p></div>`;
+        
+            for (let i = 1; i <= currentMonthLastDay; i++) {
+                if (i == new Date().getDate() && block.querySelector("h1").innerHTML == `${months[new Date().getMonth()]} ${new Date().getFullYear()}`) {
+                    days.innerHTML += `<div class="today"> <p class="day calendar__actualMonth">${i}</p></div>`;
+                }
+                else {
+                    days.innerHTML += `<div> <p class="day calendar__actualMonth">${i}</p></div>`;
                 }
             }
-
-            document.querySelectorAll(".calendar__actualMonth").forEach(item => {
-                if (item.innerHTML == new Date().getDate() && mm == new Date().getMonth()) {
-                    item.classList.add("today");
-                }
-            });
-
+    
+           if (days.querySelectorAll("div").length < 42) {
+               let x = 42 - days.querySelectorAll("div").length;
+               for (i = 1; i <= x; i++) {
+                   days.innerHTML += `<div><p class="calendar__nextMonthDay day">${i}</p></div>`;
+               }
+            }
+    
             let array = days.querySelectorAll("div");
-
+    
             for (let index = 5; index < 42;) {        // red color for weekends
-                array[index].style.color = "red";     
-                array[index + 1].style.color = "red";
+                if (!array[index].classList.contains("today")) {
+                    array[index].style.color = "red";     
+                }
+                if (!array[index + 1].classList.contains("today")) {
+                    array[index + 1].style.color = "red";     
+                }
     
                 index += 7;
             }
-
+    
             days.addEventListener("click", (event) => {
                 let target = event.target;
         
@@ -414,18 +414,18 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
                 if (target.classList.contains("day")) {
         
-                    document.querySelectorAll(".task").forEach(item => {item.remove()});
+                    //document.querySelectorAll(".task").forEach(item => {item.remove()});
         
-                    let d = +target.innerHTML < 10 ? "0" + target.innerHTML : target.innerHTML,
-                        m = currentDate.getMonth() + 1, 
-                        y = currentDate.getFullYear();
+                    let dd = +target.innerHTML < 10 ? "0" + target.innerHTML : target.innerHTML,
+                        m = d.getMonth() + 1, 
+                        y = d.getFullYear();
         
                     if (target.classList.contains("calendar__previousMonthDay")) {
-                        m = currentDate.getMonth();
+                        m = d.getMonth();
                     }
         
                     if (target.classList.contains("calendar__nextMonthDay")) {
-                        m = currentDate.getMonth() + 2;
+                        m = d.getMonth() + 2;
                     }
         
                     if (m == 0) {
@@ -440,7 +440,9 @@ document.addEventListener("DOMContentLoaded", () => {
         
                     m = m < 10 ? "0" + m : m;
         
-                    let clickedDay = `${d}.${m}.${y}`;
+                    let clickedDay = `${dd}.${m}.${y}`;
+    
+                    console.log(clickedDay);
                 
                     object.date = clickedDay;
         
@@ -452,85 +454,68 @@ document.addEventListener("DOMContentLoaded", () => {
                     target.classList.add("calendar__activeDay");        
                 }
             });
-        
-            //BACKEND
-            // data.forEach(({date, time, name, color, notification_10min, notification_1hour, notification_1day}) => {
-            localData.forEach(({date, time, name, color, notification_10min, notification_1hour, notification_1day}) => { 
+    
+            localData.forEach(({date, color}) => { 
                 let day = date.split(".")[0];
                 //day = +day < 10 ? "0" + day : day;
                 let month = date.split(".")[1];
                 //month = +month < 10 ? "0" + month : month;
                 let year = date.split(".")[2];
-
-                if (mm + 1 == month && currentDate.getFullYear() == year) {
+    
+                if (d.getMonth() + 1 == month && d.getFullYear() == year) {
                     days.querySelectorAll(".calendar__actualMonth").forEach(item => {
                         if (+item.innerHTML == day) {
                             let line = document.createElement("div");
                             line.setAttribute("class", "line");
                             line.setAttribute("style", `background-color: ${color}`);
                             item.parentElement.append(line);
-
+    
                             //item.style.borderBottom = `2px solid ${color}`;
                             //item.style.backgroundColor = color;
                         }
                     })
                 }
-                if (mm == month && currentDate.getFullYear() == year) {
+                if (d.getMonth() == month && d.getFullYear() == year) {
                     days.querySelectorAll(".calendar__previousMonthDay").forEach(item => {
                         if (+item.innerHTML == day) {
                             let line = document.createElement("div");
                             line.setAttribute("class", "line");
                             line.setAttribute("style", `background-color: ${color}`);
                             item.parentElement.append(line);
-
+    
                             //item.style.borderBottom = `2px solid ${color}`;
                             //item.style.backgroundColor = color;
                         }
                     }) 
                 }
-                if (mm + 2 == month && currentDate.getFullYear() == year) {
+                if (d.getMonth() + 2 == month && d.getFullYear() == year) {
                     days.querySelectorAll(".calendar__nextMonthDay").forEach(item => {
                         if (+item.innerHTML == day) {
                             let line = document.createElement("div");
                             line.setAttribute("class", "line");
                             line.setAttribute("style", `background-color: ${color}`);
                             item.parentElement.append(line);
-
+    
                             //item.style.borderBottom = `2px solid ${color}`;
                             //item.style.backgroundColor = color;
                         }
                     }) 
                 }
             });
+    
+    
+       
+        }
+            
 
-            buildTask(object.date);
-            console.log();
-        //});
-
-
+        buildTask(object.date);
     };
 
-    buildCalendar();
+    let monthIndex = 0;
 
-    calendar__nextMonth.addEventListener("click", () => {
+    buildCalendar(monthIndex);
 
-        let mm = currentDate.getMonth();
-        currentDate.setMonth(mm + 1);
 
-        currentMonth = months[currentDate.getMonth()];
-
-        buildCalendar();
-    });
-
-    calendar__previousMonth.addEventListener("click", () => {
-
-        let mm = currentDate.getMonth();
-        currentDate.setMonth(mm - 1);
-
-        currentMonth = months[currentDate.getMonth()];
-
-        buildCalendar();
-    });
 
 
 
