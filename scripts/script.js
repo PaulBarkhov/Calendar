@@ -494,26 +494,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
     buildCalendar(monthIndex);
 
-    calendar.addEventListener("touchend", () => {
-        console.log(calendar.scrollLeft);
-        if (calendar.scrollLeft < calendar.scrollWidth / 4.5) {
-            calendar.scrollTo(0, 0);
-            monthIndex--;
-            setTimeout(() => {
-                buildCalendar(monthIndex);
-            },500);
-        }
-        else if (calendar.scrollLeft > calendar.scrollWidth / 2.5) {
-            calendar.scrollTo(calendar.scrollWidth, 0);
-            monthIndex++;
-            setTimeout(() => {
-                buildCalendar(monthIndex);
-            },500);
-        }
-        else {
-            calendar.scrollTo((calendar.scrollWidth / 3), 0);
-        }
+    console.log(calendar.scrollWidth - 375);
 
+    calendar.addEventListener("scroll", () => {
+        if (calendar.scrollLeft == 0) {
+            monthIndex--;
+            buildCalendar(monthIndex);
+        }
+        console.log(calendar.scrollLeft);
+        if (calendar.scrollLeft == calendar.scrollWidth - calendar.scrollWidth / 3) {
+            monthIndex++;
+            buildCalendar(monthIndex);
+        }
     });
 
 

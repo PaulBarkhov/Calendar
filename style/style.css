@@ -435,18 +435,20 @@ a {
     margin-bottom: 10px;
     font-weight: 700;
     font-size: 16px;
-    overflow-x: scroll;
     border-bottom: 1px solid black;
+    justify-content: space-between;
+    align-items: center;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
 }
 
-.calendar::-webkit-scrollbar {
+/* .calendar::-webkit-scrollbar {
     display: none;
-  }
+  } */
 
 .calendarBody {
     display: flex;
     width: 300%;
-    /* transform: translate(-33.3%); */
 }
 
 .calendarBody h1 {
@@ -474,8 +476,8 @@ a {
 
 .block {
     /* transform: translate(-100%); */
-    width: 100%;
-    
+    width: 100%;    
+    scroll-snap-align: start;
 }
 
 .calendar__weekdays {
