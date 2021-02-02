@@ -439,6 +439,10 @@ a {
     border-bottom: 1px solid black;
 }
 
+.calendar::-webkit-scrollbar {
+    display: none;
+  }
+
 .calendarBody {
     display: flex;
     width: 300%;
@@ -460,10 +464,12 @@ a {
 }
 
 #addButton {
-    width: 30%;
-    margin-left: 35%;
-    padding: 5px;
-    margin-bottom: 10px;
+    float: right;
+    margin-right: 20px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: rgba(0, 128, 0, 0.418);
 }
 
 .block {

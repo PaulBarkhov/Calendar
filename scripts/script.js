@@ -493,10 +493,6 @@ document.addEventListener("DOMContentLoaded", () => {
     let monthIndex = 0;
 
     buildCalendar(monthIndex);
- 
-    console.log(`ScrollWidth = ${calendar.scrollWidth}`);
-    console.log(`ScrollWidth / 2.5 = ${calendar.scrollWidth / 2.5}`);
-    console.log(`ScrollWidth / 4.5 = ${calendar.scrollWidth / 4.5}`);
 
     calendar.addEventListener("touchend", () => {
         console.log(calendar.scrollLeft);
@@ -507,7 +503,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 buildCalendar(monthIndex);
             },500);
         }
-        if (calendar.scrollLeft > calendar.scrollWidth / 2.5) {
+        else if (calendar.scrollLeft > calendar.scrollWidth / 2.5) {
             calendar.scrollTo(calendar.scrollWidth, 0);
             monthIndex++;
             setTimeout(() => {
