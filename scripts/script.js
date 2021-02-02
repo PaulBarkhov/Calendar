@@ -319,27 +319,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     //CALENDAR 
-    const calendar__currentMonth = document.querySelector(".calendar__currentMonth"),
-          calendar__previousMonth = document.querySelector(".calendar__previousMonth"),
-          calendar__nextMonth = document.querySelector(".calendar__nextMonth"),
-          calendarBody = document.querySelector(".calendarBody"),
-          days = document.querySelector(".days");
+    const calendar = document.querySelector(".calendar"),
+          calendarBody = document.querySelector(".calendarBody");
 
-    const getResource = async (url) => {
-        const res = await fetch(url);
-        if (!res.ok) {
-            throw new Error(`Could not fetch ${url}, status: ${res.status}`);
-        }
-        return await res.json();
-    }
 
     function buildCalendar (n) {
         updateLocalData();
 
         document.querySelectorAll(".block").forEach(item => {item.remove()});
-
-
-        // console.log(`current date is: ${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`);
     
         for (let j = -1; j < 2; j++) {
             let d = new Date();
@@ -405,7 +392,7 @@ document.addEventListener("DOMContentLoaded", () => {
     
                 index += 7;
             }
-    
+
             days.addEventListener("click", (event) => {
                 let target = event.target;
         
@@ -457,9 +444,7 @@ document.addEventListener("DOMContentLoaded", () => {
     
             localData.forEach(({date, color}) => { 
                 let day = date.split(".")[0];
-                //day = +day < 10 ? "0" + day : day;
                 let month = date.split(".")[1];
-                //month = +month < 10 ? "0" + month : month;
                 let year = date.split(".")[2];
     
                 if (d.getMonth() + 1 == month && d.getFullYear() == year) {
@@ -469,9 +454,6 @@ document.addEventListener("DOMContentLoaded", () => {
                             line.setAttribute("class", "line");
                             line.setAttribute("style", `background-color: ${color}`);
                             item.parentElement.append(line);
-    
-                            //item.style.borderBottom = `2px solid ${color}`;
-                            //item.style.backgroundColor = color;
                         }
                     })
                 }
@@ -482,9 +464,6 @@ document.addEventListener("DOMContentLoaded", () => {
                             line.setAttribute("class", "line");
                             line.setAttribute("style", `background-color: ${color}`);
                             item.parentElement.append(line);
-    
-                            //item.style.borderBottom = `2px solid ${color}`;
-                            //item.style.backgroundColor = color;
                         }
                     }) 
                 }
@@ -495,27 +474,51 @@ document.addEventListener("DOMContentLoaded", () => {
                             line.setAttribute("class", "line");
                             line.setAttribute("style", `background-color: ${color}`);
                             item.parentElement.append(line);
-    
-                            //item.style.borderBottom = `2px solid ${color}`;
-                            //item.style.backgroundColor = color;
                         }
-                    }) 
+                    });
                 }
             });
-    
-    
-       
         }
-            
+        calendar.style.scrollBehavior = "";
+        calendar.scrollTo((calendar.scrollWidth / 3), 0);
+        calendar.style.scrollBehavior = "smooth";
+
 
         buildTask(object.date);
     };
 
+
+
+
     let monthIndex = 0;
 
     buildCalendar(monthIndex);
+ 
+    console.log(`ScrollWidth = ${calendar.scrollWidth}`);
+    console.log(`ScrollWidth / 2.5 = ${calendar.scrollWidth / 2.5}`);
+    console.log(`ScrollWidth / 4.5 = ${calendar.scrollWidth / 4.5}`);
 
+    calendar.addEventListener("touchend", () => {
+        console.log(calendar.scrollLeft);
+        if (calendar.scrollLeft < calendar.scrollWidth / 4.5) {
+            calendar.scrollTo(0, 0);
+            monthIndex--;
+            setTimeout(() => {
+                buildCalendar(monthIndex);
+            },500);
+        }
+        if (calendar.scrollLeft > calendar.scrollWidth / 2.5) {
+            calendar.scrollTo(calendar.scrollWidth, 0);
+            monthIndex++;
+            setTimeout(() => {
+                buildCalendar(monthIndex);
+            },500);
+        }
+        else {
+            calendar.scrollTo((calendar.scrollWidth / 3), 0);
+        }
 
+    });
 
 
 
@@ -560,7 +563,6 @@ document.addEventListener("DOMContentLoaded", () => {
     //     checkSystemColorScheme();
     // });
          
-    
 
 
 });  
