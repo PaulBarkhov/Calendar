@@ -15,6 +15,83 @@ web.loadUrl("file:///android_asset/www/index.html"); */
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
+header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+    position: fixed;
+    max-width: 425px;
+    width: 100%;
+
+    z-index: 10;
+}
+
+    header button {
+        border: none;
+        font-size: 30px;
+        font-weight: 700;
+
+        background: white;
+
+        padding: 0;
+        margin: 10px;
+        width: auto;
+    }
+
+    #addButton {
+        font-size: 20px;
+        transition: transform .3s ease;
+    }
+
+menu {
+    position: absolute;
+    top: 60px;
+    
+    width: 100%;
+    height: calc(100% - 60px);
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height .3s ease;
+
+
+    z-index: 100;
+    background: rgba(0, 0, 0, 0.856);
+
+}
+
+    .expanded {
+        max-height: 100%;
+    }
+
+.menu {
+    
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    background: white;
+
+    list-style: none;
+
+    padding-bottom: 20px;
+}
+
+    .menu__item {
+        padding: 10px;
+    }
+
+        .menu__link {
+            color: black;
+
+            font-size: 18px;
+            font-weight: 500;
+            text-decoration: none;
+            text-transform: uppercase;
+        }
+
 body {
     max-width: 425px;
     margin: 0 auto;
@@ -28,6 +105,10 @@ body {
     /* background-blend-mode: color; */
 
     backdrop-filter: blur(100px);
+}
+
+main {
+    transition: opacity .3s linear;
 }
 
 .bright {
@@ -89,12 +170,13 @@ a {
         align-items: center;
 
         position: relative;
+
+        transition: opacity .3s linear;
     }
 
     .taskBox h2 {
         position: absolute;
-        top: 10px;
-        font-weight: 700;
+        top: 15px;
         text-align: center;
         margin-bottom: 20px;
     }
@@ -102,23 +184,29 @@ a {
     /* SET TASK NAME */
 
     #closeButton {
-        position: absolute;
-        top: 20px;
-        right: 25px;
         z-index: 2;
+        position: absolute;
+        right: 20px;
+        top: 20px;
+        width: 30px;
+        border: none;
+        padding: 5px;
+        text-align: center;
         font-size: 20px;
-        color: black;
+        padding: 0;
     }
 
     .backButton {
         position: absolute;
-        top: 10px;
-        left: 15px;
+        top: 20px;
+        left: 20px;
+        padding: 0;
         font-size: 20px;
         font-weight: 700;
     }
 
     .set__task__name #name {
+        background: white;
         background: none;
         outline: none;
         border: none;
@@ -191,11 +279,6 @@ a {
         padding: 10px;
     }
 
-    .set__task__time h2{
-        text-align: center;
-        margin-bottom: 15px;
-    }
-
     .set__task__time .clock {
         display: flex;
         flex-direction: row;
@@ -208,19 +291,49 @@ a {
     }
 
         .clock .hours {
-            border: 1px solid rgb(119, 119, 119);
+            padding: 0;
             background-color: rgba(255, 255, 255, 0.315);
             border-radius: 5px;
-            padding: 10px;
             text-align: center;
+            height: 50px;
+            overflow-y: scroll;
+            scroll-snap-type: y mandatory;
+
+            -ms-overflow-style: none;  /* Hide scrollbar for IE and Edge */
+            scrollbar-width: none;  /*Hide scrollbar for Firefox */
+        }
+
+        .clock .hours::-webkit-scrollbar {
+            display: none;
+        }
+
+        .clock .hours .hour {
+            scroll-snap-align: start;
+            height: 50px;
+            padding: 0;
         }
 
         .clock .minutes {
-            border: 1px solid rgb(119, 119, 119);
+            padding: 0;
             background-color: rgba(255, 255, 255, 0.315);
             border-radius: 5px;
-            padding: 10px;
             text-align: center;
+            height: 50px;
+            overflow-y: scroll;
+            scroll-snap-type: y mandatory;
+
+            -ms-overflow-style: none;  /* Hide scrollbar for IE and Edge */
+            scrollbar-width: none;  /*Hide scrollbar for Firefox */
+        }
+
+        .clock .minutes::-webkit-scrollbar {
+            display: none;
+        }
+
+        .clock .minutes .minute {
+            scroll-snap-align: start;
+            height: 50px;
+            padding: 0;
         }
 
 
@@ -252,7 +365,7 @@ a {
     max-height: 55px;
 }
 
-.expanded {
+.taskExpanded {
     max-height: 263px;
 }
 
@@ -432,28 +545,34 @@ a {
 /* CALENDAR */
 
 .calendar {
+    max-width: 425px;
     margin-bottom: 10px;
     font-weight: 700;
     font-size: 16px;
     border-bottom: 1px solid black;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
+
     overflow-x: auto;
+    -ms-overflow-style: none;  /* Hide scrollbar for IE and Edge */
+    scrollbar-width: none;  /*Hide scrollbar for Firefox */
+
     scroll-snap-type: x mandatory;
+
+    transition: opacity .3s linear;
 }
 
-/* .calendar::-webkit-scrollbar {
+.calendar::-webkit-scrollbar {
     display: none;
-  } */
+  }
 
 .calendarBody {
     display: flex;
     width: 300%;
 }
 
-.calendarBody h1 {
-    margin-top: 5px;
-    font-size: 25px;
+.calendarBody h2 {
+    margin-top: 15px;
     text-align: center;
 }
 
@@ -465,14 +584,6 @@ a {
     padding: 10px;
 }
 
-#addButton {
-    float: right;
-    margin-right: 20px;
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    background-color: rgba(0, 128, 0, 0.418);
-}
 
 .block {
     /* transform: translate(-100%); */
@@ -481,14 +592,14 @@ a {
 }
 
 .calendar__weekdays {
-    background-color: rgba(165, 42, 42, 0.459);
-    position: absolute;
-    top: 40px;
-    padding: 3px 0px 7px;
+    max-width: 425px;
     width: 100%;
+    background-color: rgba(165, 42, 42, 0.459);
+    position: fixed;
+    top: 60px;
+    padding: 3px 0px 7px;
     display: flex;
     flex-direction: row;
-    flex-wrap: wrap;
     text-align: center;
     margin-top: 5px;
 }
@@ -506,7 +617,7 @@ a {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    margin-top: 40px;
+    margin-top: 50px;
 }
 
 .days div {

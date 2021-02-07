@@ -1,13 +1,14 @@
 document.addEventListener("DOMContentLoaded", () => {
-    let currentDate = new Date(),
-        months = ["Januar", "Februar", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    //MENU
+    const menu = document.querySelector("menu");
+    const menuButton = document.querySelector("#menuButton");
 
-    const body = document.querySelector("body"),
-          glass = document.querySelectorAll(".glass");
+    menuButton.addEventListener("click", () => {
+        menu.classList.toggle("expanded");
+    })
 
     //ADD TASK
     const addButton = document.querySelector("#addButton"),
-          closeButton = document.querySelector("#closeButton"),
           main = document.querySelector("main"),
           content = document.querySelector(".content"),
           add__task__window__wrapper = document.querySelector(".add__task__window__wrapper"),
@@ -63,153 +64,189 @@ document.addEventListener("DOMContentLoaded", () => {
 
         object.date = day + "." + month + "." + year;
 
+    // CLOCK
+    let hours = 8,
+    minutes = 30;
+
     const buildClock = () => {
 
-        let hours = new Date(),
-            minutes = new Date();
+        clockHours.querySelectorAll(".hour").forEach(item => {item.remove()});
+        clockMinutes.querySelectorAll(".minute").forEach(item => {item.remove()});
 
-        hours.setHours(8);
-        minutes.setMinutes(0);
-
-        const updateClock = () => {
-            clockHours.innerHTML = hours.getHours() < 10 ? "0" + hours.getHours() : hours.getHours();
-            clockMinutes.innerHTML = minutes.getMinutes() < 10 ? "0" + minutes.getMinutes() : minutes.getMinutes();
+        for (let i = 0; i <= 24; i++) {
+            if (i < 24) {
+                clockHours.innerHTML += `<div class="hour">${i < 10 ? "0" + i : i}</div>`;
+            }
+            else {
+                clockHours.innerHTML += `<div class="hour">00</div>`;
+            }
         }
 
-        updateClock();
+        for (let i = 0; i <= 60; i++) {
+            if (i < 60) {
+                clockMinutes.innerHTML += `<div class="minute">${i < 10 ? "0" + i : i}</div>`;
+            }
+            else {
+                clockMinutes.innerHTML += `<div class="minute">00</div>`;
+            }
+        }
 
-        clockHours.addEventListener("click", () => {
-            hours.setHours(hours.getHours() + 1);
-            updateClock();
-        });
+        // clockHours.scrollTo(0,hours * 50);
+        // clockMinutes.scrollTo(0,minutes * 50);
 
-        clockMinutes.addEventListener("click", () => {
-            minutes.setMinutes(minutes.getMinutes() + 1);
-            updateClock();
-        });
+        clockHours.scrollTo(0,400);
+        clockMinutes.scrollTo(0,1500);
     }
+
+    buildClock();
+
+
+
+    clockHours.addEventListener("scroll", () => {
+        hours = Math.floor(clockHours.scrollTop / 50);
+        //console.log(hours);
+        if (hours == 24) {
+            hours = 0;
+            clockHours.scrollTo(0,0);
+        }
+        // if (clockHours.scrollTop == 0) {
+        //     hours = 24;
+        //     clockHours.scrollTo(0,1200);
+        // }
+    });
+
+    clockMinutes.addEventListener("scroll", () => {
+        minutes = Math.floor(clockMinutes.scrollTop / 50);
+        //console.log(minutes);
+        if (clockMinutes.scrollTop == 3000) {
+            buildClock();
+            clockMinutes.scrollTo(0,0);
+        }
+        // if (clockMinutes.scrollTop == 0) {
+        //     //buildClock();
+        //     clockMinutes.scrollTo(0,2999);
+        // }
+    });
 
     const buildTask = (clickedDay) => {
         updateLocalData();
-        document.querySelectorAll(".task").forEach(item => {
-            item.remove();
-        });
-        // getResource('http://localhost:3000/requests')
-        // .then(data => {
-        //     data.forEach(({date, time, name, color, notification_10min, notification_1hour, notification_1day, id}) => {
-            localData.forEach(({date, time, name, color, notification_10min, notification_1hour, notification_1day, id}) => {        
-                if (date == clickedDay) {
-                    task = document.createElement("div");
-                    task.setAttribute("class", "task");
-                    task.innerHTML = `
-              
-                        <div class="header">
-                            <div class="id hide">${id}</div>
-                            <div class="taskColor" style="background: ${color}"></div>
-                            <div class="taskName">${name}</div>
-                            <div class="taskTime">${time}</div>
-                        </div>
+        document.querySelectorAll(".task").forEach(item => {item.remove()});
+        localData.forEach(({date, time, name, color, notification_10min, notification_1hour, notification_1day, id}) => {        
+            if (date == clickedDay) {
+                task = document.createElement("div");
+                task.setAttribute("class", "task");
+                task.innerHTML = `
             
-                        <div class="main">
-                            <textarea name="" id="" cols="30" rows="10"></textarea>
-                            <div class="buttons">
-                                <button class="done">✔</button>
-                                <button>🖊</button>
-                                <button class="delete">❌</button>
+                    <div class="header">
+                        <div class="id hide">${id}</div>
+                        <div class="taskColor" style="background: ${color}"></div>
+                        <div class="taskName">${name}</div>
+                        <div class="taskTime">${time}</div>
+                    </div>
+        
+                    <div class="main">
+                        <textarea name="" id="" cols="30" rows="10"></textarea>
+                        <div class="buttons">
+                            <button class="done">✔</button>
+                            <button>🖊</button>
+                            <button class="delete">❌</button>
+                        </div>
+                    </div>
+        
+                    <div class="right">
+                        <div class="notifications">
+                            <div>
+                                <p>1 day</p>
+    
+                                <label class="switch">
+                                    <input type="checkbox" ${notification_1day}>
+                                    <span class="slider"></span>
+                                </label>
+                                <hr>
                             </div>
-                        </div>
-            
-                        <div class="right">
-                            <div class="notifications">
-                                <div>
-                                    <p>1 day</p>
-        
-                                    <label class="switch">
-                                        <input type="checkbox" ${notification_1day}>
-                                        <span class="slider"></span>
-                                    </label>
-                                    <hr>
-                                </div>
-        
-                                <div>
-                                    <p>1 hour</p>
-                                    
-                                    <label class="switch">
-                                        <input type="checkbox" ${notification_1hour}>
-                                        <span class="slider"></span>
-                                    </label>
-                                    <hr>
-                                </div>
+    
+                            <div>
+                                <p>1 hour</p>
                                 
-                                <div>
-                                    <p>10 min</p>
-                
-                                    <label class="switch">
-                                        <input type="checkbox" ${notification_10min}>
-                                        <span class="slider"></span>
-                                    </label> 
-                                </div>
-                            </div>`
+                                <label class="switch">
+                                    <input type="checkbox" ${notification_1hour}>
+                                    <span class="slider"></span>
+                                </label>
+                                <hr>
+                            </div>
+                            
+                            <div>
+                                <p>10 min</p>
             
-                    content.append(task);
+                                <label class="switch">
+                                    <input type="checkbox" ${notification_10min}>
+                                    <span class="slider"></span>
+                                </label> 
+                            </div>
+                        </div>`
         
-                    task.addEventListener("click", (event) => {
-                        event.preventDefault();
-                        if (event.target.classList.contains("taskName") || event.target.classList.contains("taskColor") || event.target.classList.contains("taskDate") || event.target.classList.contains("taskTime")) {
-                            event.target.parentElement.parentElement.classList.toggle("expanded");
-                        }
-                        if (event.target.classList.contains("done")) {
-                            event.target.parentElement.parentElement.parentElement.classList.toggle("expanded");
-                        }
-                        else {
-                            event.target.parentElement.classList.toggle("expanded");
-                        }
-                    });        
+                content.append(task);
+    
+                task.addEventListener("click", (event) => {
+                    event.preventDefault();
+                    console.log("task clicked");
+                    if (event.target.classList.contains("taskName") || event.target.classList.contains("taskColor") || event.target.classList.contains("taskDate") || event.target.classList.contains("taskTime")) {
+                        event.target.parentElement.parentElement.classList.toggle("taskExpanded");
+                    }
+                    if (event.target.classList.contains("done")) {
+                        event.target.parentElement.parentElement.parentElement.classList.toggle("taskExpanded");
+                    }
+                    else {
+                        event.target.parentElement.classList.toggle("taskExpanded");
+                    }
+                });        
 
-                    task.querySelector(".delete").addEventListener("click", () => {
-                        localData.forEach(({id}) => {
-                            if (id == task.querySelector(".id").innerHTML) {
-                                localStorage.removeItem(`task${id}`);
-                                //task.remove();
-                                updateLocalData();
-                                buildCalendar(monthIndex);
-                                console.log(localData);
-                            }
-                        })
-                        // fetch(`http://localhost:3000/requests/${id}/`, {
-                        //     method: 'DELETE',
-                        // });
-                        // task.remove();
-                        // buildCalendar();
+                task.querySelector(".delete").addEventListener("click", () => {
+                    localData.forEach(({id}) => {
+                        if (id == task.querySelector(".id").innerHTML) {
+                            localStorage.removeItem(`task${id}`);
+                            updateLocalData();
+                            buildCalendar(monthIndex);
+                            console.log(localData);
+                        }
                     });
-                }
-            });
-        //};
+                });
+            }
+        });
     }
 
-    addButton.addEventListener("click", () => {    
-        main.classList.toggle("hide");
-        add__task__window__wrapper.classList.toggle("hide");
-        set__task__name.classList.toggle("hide");
+    addButton.addEventListener("click", () => { 
+        if (main.classList.contains("hide")) {
+            main.classList.toggle("hide");
+            add__task__window__wrapper.classList.toggle("hide");
+            main.style.opacity = "1"; 
+    
+            set__task__name.classList.add("hide");
+            set__task__color.classList.add("hide");
+            set__task__time.classList.add("hide");
+            menu.classList.remove("expanded");
+    
+            object.name = "";
+            object.color = "";
+            object.date = "";
+            object.time = "";
+            object.notification_10min = "";
+            object.notification_1hour = "";
+            object.notification_1day = "";
 
-        task__name__input.focus();
-    });
+            addButton.style.transform = "rotate(0deg)";
+        }
+        else {
+            main.style.opacity = "0";   
+            setTimeout(() => {
+                main.classList.toggle("hide");
+                add__task__window__wrapper.classList.toggle("hide");
+                set__task__name.classList.toggle("hide");
+                task__name__input.focus();
+            },300)
+            addButton.style.transform = "rotate(45deg)";
+        }
 
-    closeButton.addEventListener("click", () => {
-        main.classList.toggle("hide");
-        add__task__window__wrapper.classList.toggle("hide");
-
-        set__task__name.classList.add("hide");
-        set__task__color.classList.add("hide");
-        set__task__time.classList.add("hide");
-
-        object.name = "";
-        object.color = "";
-        object.date = "";
-        object.time = "";
-        object.notification_10min = "";
-        object.notification_1hour = "";
-        object.notification_1day = "";
     });
     
     task__time__back__button.addEventListener("click", () => {
@@ -236,7 +273,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     task__time__OK__button.addEventListener("click", () => {
-        object.time = clockHours.innerHTML + ":" + clockMinutes.innerHTML;
+        object.time = hours + ":" + minutes;
 
         set__task__time.classList.toggle("hide");
         set__task__color.classList.toggle("hide");
@@ -246,37 +283,6 @@ document.addEventListener("DOMContentLoaded", () => {
         item.addEventListener("click", (event) => {
             event.preventDefault();
             object.color = event.target.style.backgroundColor;
-
-            //BACKEND
-            const postData = async (url, data) => {
-                const res = await fetch (url, {
-                    method: "POST",
-                    headers: {
-                        'Content-type': 'application/json'
-                    },
-                    body: data
-                });
-            }
-
-            // let task = {
-            //     "name": "New task",
-            //     "color": "blue",
-            //     "date": "20.01.2021",
-            //     "time": "08:00",
-            //     "notification_10min": "checked",
-            //     "notification_1hour": "",
-            //     "notification_1day": "",
-            //     "id": 16
-            // }
-
-            // let localData = JSON.parse(localStorage.getItem('tasks'));
-            // if (localData != null) {
-            //     localData.push(object);
-            // }
-            // else {
-            //     localData = [object];
-            // }
-            // localStorage.setItem("tasks", JSON.stringify(localData));
 
             let index = localStorage.getItem('index');
 
@@ -294,33 +300,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
             buildCalendar(monthIndex);
 
+            addButton.style.transform = "rotate(0deg)";
             set__task__color.classList.toggle("hide");
             add__task__window__wrapper.classList.toggle("hide");
             main.classList.toggle("hide");
-
-
-            // postData("http://localhost:3000/requests", JSON.stringify(object))
-            // .then(() => {
-            //     buildCalendar();
-    
-            //     set__task__color.classList.toggle("hide");
-            //     add__task__window__wrapper.classList.toggle("hide");
-            //     main.classList.toggle("hide");
-            // })
-
+            main.style.opacity = 1;
         });
-
     });
-
-
-
-
-
-
 
     //CALENDAR 
     const calendar = document.querySelector(".calendar"),
-          calendarBody = document.querySelector(".calendarBody");
+          calendarBody = document.querySelector(".calendarBody"),
+          months = ["Januar", "Februar", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
 
     function buildCalendar (n) {
@@ -347,7 +338,7 @@ document.addEventListener("DOMContentLoaded", () => {
         
             const block = document.createElement("div");
             block.classList.add("block");
-            block.innerHTML = `<div><h1>${month} ${year}</h1></div>`;
+            block.innerHTML = `<div><h2>${month} ${year}</h2></div>`;
             calendarBody.append(block);
     
             const days = document.createElement("div");
@@ -365,7 +356,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         
             for (let i = 1; i <= currentMonthLastDay; i++) {
-                if (i == new Date().getDate() && block.querySelector("h1").innerHTML == `${months[new Date().getMonth()]} ${new Date().getFullYear()}`) {
+                if (i == new Date().getDate() && block.querySelector("h2").innerHTML == `${months[new Date().getMonth()]} ${new Date().getFullYear()}`) {
                     days.innerHTML += `<div class="today"> <p class="day calendar__actualMonth">${i}</p></div>`;
                 }
                 else {
@@ -400,9 +391,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     target = target.querySelector(".day");
                 }
                 if (target.classList.contains("day")) {
-        
-                    //document.querySelectorAll(".task").forEach(item => {item.remove()});
-        
+                
                     let dd = +target.innerHTML < 10 ? "0" + target.innerHTML : target.innerHTML,
                         m = d.getMonth() + 1, 
                         y = d.getFullYear();
@@ -483,74 +472,23 @@ document.addEventListener("DOMContentLoaded", () => {
         calendar.scrollTo((calendar.scrollWidth / 3), 0);
         calendar.style.scrollBehavior = "smooth";
 
-
         buildTask(object.date);
     };
-
-
-
 
     let monthIndex = 0;
 
     buildCalendar(monthIndex);
-
-    console.log(calendar.scrollWidth - 375);
 
     calendar.addEventListener("scroll", () => {
         if (calendar.scrollLeft == 0) {
             monthIndex--;
             buildCalendar(monthIndex);
         }
-        console.log(calendar.scrollLeft);
         if (calendar.scrollLeft == calendar.scrollWidth - calendar.scrollWidth / 3) {
             monthIndex++;
             buildCalendar(monthIndex);
         }
-    });
-
-
-
-    //DEVICE COLOR THEME
-    // function checkSystemColorScheme() {
-    //     if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-            
-    //         body.classList.remove("bright");
-    //         body.classList.add("dark");
-
-    //         document.querySelectorAll(".glass").forEach(item => {
-    //             item.classList.add("darkGlass");
-    //         });
-
-    //         document.querySelectorAll("button").forEach(item => {
-    //             item.style.color = "white";
-    //         });
-
-    //         document.querySelector("#name").classList.remove("blackPlaceholder");
-    //         document.querySelector("#name").classList.add("whitePlaceholder");
-    //     }
-    //     else {
-    //         body.classList.remove("dark");
-    //         body.classList.add("bright");
-
-    //         document.querySelectorAll(".glass").forEach(item => {
-    //             item.classList.remove("darkGlass");
-    //         });
-
-    //         document.querySelectorAll("button").forEach(item => {
-    //             item.style.color = "black";
-    //         });
-
-    //         document.querySelector("#name").classList.remove("whitePlaceholder");
-    //         document.querySelector("#name").classList.add("blackPlaceholder");
-    //     }
-    // }
-
-    // checkSystemColorScheme();
-
-    // window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
-    //     checkSystemColorScheme();
-    // });
-         
+    });         
 
 
 });  

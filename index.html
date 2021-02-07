@@ -6,10 +6,25 @@
     <link rel="stylesheet" href="style/style.css">
     <title>To Do List</title>
 </head>
+
+<header>
+    <button id="menuButton">☰</button>
+    <button id="addButton">➕</button>
+</header>
+
+<menu>
+    <ul class="menu">
+        <li class="menu__item"><a href="" class="menu__link">Home</a></li>
+        <li class="menu__item"><a href="" class="menu__link">Calendar</a></li>
+        <li class="menu__item"><a href="" class="menu__link">Calculator</a></li>
+        <li class="menu__item"><a href="" class="menu__link">Help</a></li>
+        <li class="menu__item"><a href="" class="menu__link">Dark Mode</a></li>
+    </ul>
+</menu>
+
 <body class="bright">
     <div class="add__task__window__wrapper hide">
             <div class="add__task__window">
-                <a id="closeButton">✖</a>
 
                 <div class="set__task__name taskBox hide">    
                     <h2>Give it a name</h2>
@@ -17,13 +32,17 @@
                     <button id="task__name__OK__button">OK</button>
                 </div>
 
-                <div class="set__task__time hide taskBox">
+                <div class="set__task__time taskBox hide">
                     <a id="task__time__back__button" class="backButton">&#5176;</a>
                     <h2>Set time</h2>
                     <div class="clock">
-                        <div class="hours">12</div>
+                        <div class="hours">
+
+                        </div>
                         :
-                        <div class="minutes">30</div>
+                        <div class="minutes">
+
+                        </div>
                     </div>
 
                     <div>
@@ -58,6 +77,8 @@
 
         <div class="calendar">
 
+
+
             <div class="calendar__weekdays">
                 <div>Mo</div>
                 <div>Tu</div>
@@ -74,7 +95,6 @@
     
         </div>
 
-        <button id="addButton">➕</button>
 
         <div class="content">
 
