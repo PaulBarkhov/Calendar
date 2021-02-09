@@ -7,101 +7,99 @@
     <title>To Do List</title>
 </head>
 
-<header>
-    <div><button id="menuButton">☰</button></div>
-    <div><button id="addButton">➕</button></div>
-</header>
 
-<menu>
-    <ul class="menu">
-        <li class="menu__item"><a href="" class="menu__link">Home</a></li>
-        <li class="menu__item"><a href="" class="menu__link">Calendar</a></li>
-        <li class="menu__item"><a href="" class="menu__link">Calculator</a></li>
-        <li class="menu__item"><a href="" class="menu__link">Help</a></li>
-        <li class="menu__item"><a href="" class="menu__link">Dark Mode</a></li>
-    </ul>
-</menu>
 
 <body class="bright">
-    <div class="add__task__window__wrapper hide">
-            <div class="add__task__window">
 
-                <div class="set__task__name taskBox hide">    
-                    <h2>Give it a name</h2>
-                    <input autocomplete="off" placeholder="New Task" type="text" id="name" class="blackPlaceholder">
-                    <button id="task__name__OK__button">OK</button>
-                </div>
-
-                <div class="set__task__time taskBox hide">
-                    <a id="task__time__back__button" class="backButton">&#5176;</a>
-                    <h2>Set time</h2>
-                    <div class="clock">
-                        <div class="hours">
-
-                        </div>
-                        :
-                        <div class="minutes">
-
-                        </div>
-
-                        <div class="coverTop"></div>
-                        <div class="coverBottom"></div>
-                    </div>
-
-                    <div>
-                        <button id="task__time__OK__button">OK</button>
-                    </div>
-
-                </div>
-
-                <div class="set__task__color taskBox hide">
-                    <a id="task__color__back__button" class="backButton">&#5176;</a>
-                    <table>
-                        <h2>Set color</h2>
-
-                        <tr>
-                            <th style="background-color: green"></th>
-                            <th style="background-color: red"></th>
-                            <th style="background-color: purple"></th>
-                        </tr>
-                        <tr>
-                            <th style="background-color: yellow"></th>
-                            <th style="background-color: blue"></th>
-                            <th style="background-color: pink"></th>
-                        </tr>
-                    </table>    
-                </div>
-
-                </div>
-            </div>
-    </div>
+    <header>
+        <div><button id="menuButton">☰</button></div>
+        <div><button id="addButton">➕</button></div>
+    </header>
+    
+    <menu>
+        <ul class="menu">
+            <li class="menu__item"><a href="" class="menu__link">Home</a></li>
+            <li class="menu__item"><a href="" class="menu__link">Calendar</a></li>
+            <li class="menu__item"><a href="" class="menu__link">Calculator</a></li>
+            <li class="menu__item"><a href="" class="menu__link">Help</a></li>
+            <li class="menu__item"><a href="" class="menu__link">Dark Mode</a></li>
+        </ul>
+    </menu>
 
     <main>
-
-        <div class="calendar">
-
-            <div class="calendar__weekdays">
-                <div>Mo</div>
-                <div>Tu</div>
-                <div>We</div>
-                <div>Th</div>
-                <div>Fr</div>
-                <div>Sa</div>
-                <div>Su</div>
+        <div class="main__inner">
+            <div class="calendar__wrapper">
+                <div class="calendar">
+    
+                    <div class="calendar__weekdays">
+                        <div>Mo</div>
+                        <div>Tu</div>
+                        <div>We</div>
+                        <div>Th</div>
+                        <div>Fr</div>
+                        <div>Sa</div>
+                        <div>Su</div>
+                    </div>
+            
+                    <div class="calendarBody">
+            
+                    </div>
+            
+                </div>
+        
+                <div class="content">
+        
+                </div>
             </div>
     
-            <div class="calendarBody">
+            <div class="add__task__window__wrapper">
+                <div class="add__task__window">
     
-            </div>
+                    <div class="set__task__name taskBox">    
+                        <h2>Give it a name</h2>
+                        <input autocomplete="off" placeholder="New Task" type="text" id="name" class="blackPlaceholder">
+                        <button id="task__name__OK__button">OK</button>
+                    </div>
     
+                    <div class="set__task__time taskBox">
+                        <h2>Set time</h2>
+                        <div class="clock">
+                            <div class="hours">
+    
+                            </div>
+                            :
+                            <div class="minutes">
+    
+                            </div>
+    
+                            <div class="coverTop"></div>
+                            <div class="coverBottom"></div>
+                        </div>
+    
+                        <button id="task__time__OK__button">OK</button>
+                    </div>
+    
+                    <div class="set__task__color taskBox">
+                        <table>
+                            <h2>Set color</h2>
+    
+                            <tr>
+                                <th style="background-color: green"></th>
+                                <th style="background-color: red"></th>
+                                <th style="background-color: purple"></th>
+                            </tr>
+                            <tr>
+                                <th style="background-color: yellow"></th>
+                                <th style="background-color: blue"></th>
+                                <th style="background-color: pink"></th>
+                            </tr>
+                        </table>    
+                    </div>
+    
+                    </div>
+                </div>
+            </div>    
         </div>
-
-
-        <div class="content">
-
-        </div>
-
-
     </main>
 
 

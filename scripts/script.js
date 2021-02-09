@@ -225,14 +225,10 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     addButton.addEventListener("click", () => { 
-        if (main.classList.contains("hide")) {
-            main.classList.toggle("hide");
-            add__task__window__wrapper.classList.toggle("hide");
-            main.style.opacity = "1"; 
+        if (main.querySelector(".main__inner").classList.contains("active")) {
+            main.querySelector(".main__inner").style.transform="translate(0,0)";
+            main.querySelector(".main__inner").classList.remove("active");
     
-            set__task__name.classList.add("hide");
-            set__task__color.classList.add("hide");
-            set__task__time.classList.add("hide");
             menu.classList.remove("expanded");
     
             object.name = "";
@@ -246,21 +242,15 @@ document.addEventListener("DOMContentLoaded", () => {
             addButton.style.transform = "rotate(0deg)";
         }
         else {
-            main.style.opacity = "0";   
-            setTimeout(() => {
-                main.classList.toggle("hide");
-                add__task__window__wrapper.classList.toggle("hide");
-                set__task__name.classList.toggle("hide");
-                task__name__input.focus();
-            },300)
+            main.querySelector(".main__inner").style.transform="translate(-50%,0)";
+            main.querySelector(".main__inner").classList.add("active");
             addButton.style.transform = "rotate(45deg)";
-        }
+                setTimeout(() => {
+                    task__name__input.focus();
+                    add__task__window__wrapper.scrollTo(0,0);
 
-    });
-    
-    task__time__back__button.addEventListener("click", () => {
-        set__task__time.classList.toggle("hide");
-        set__task__name.classList.toggle("hide");
+                },300)
+        }
     });
 
     task__name__OK__button.addEventListener("click", () => {
@@ -271,21 +261,14 @@ document.addEventListener("DOMContentLoaded", () => {
             object.name = task__name__input.value;
         }
 
-        set__task__name.classList.toggle("hide");
-        set__task__time.classList.toggle("hide");
-    });
-
-    task__color__back__button.addEventListener("click", () => {
-        set__task__color.classList.toggle("hide");
-        set__task__time.classList.toggle("hide");
+        add__task__window__wrapper.scrollBy((add__task__window__wrapper.scrollWidth / 3), 0)
     });
 
     task__time__OK__button.addEventListener("click", () => {
         object.time = (hours < 10 ? "0" + hours : hours) + ":" + (minutes < 10 ? "0" + minutes : minutes);
         buildClock();
 
-        set__task__time.classList.toggle("hide");
-        set__task__color.classList.toggle("hide");
+        add__task__window__wrapper.scrollBy((add__task__window__wrapper.scrollWidth / 3), 0)
     });
 
     task__colors.forEach(item => {
@@ -309,11 +292,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
             buildCalendar(monthIndex);
 
+            main.querySelector(".main__inner").style.transform="translate(0,0)";
+            main.querySelector(".main__inner").classList.remove("active");
+            add__task__window__wrapper.scrollTo(0,0);
+    
+            menu.classList.remove("expanded");
+    
+            object.name = "";
+            object.color = "";
+            object.date = "";
+            object.time = "";
+            object.notification_10min = "";
+            object.notification_1hour = "";
+            object.notification_1day = "";
+
             addButton.style.transform = "rotate(0deg)";
-            set__task__color.classList.toggle("hide");
-            add__task__window__wrapper.classList.toggle("hide");
-            main.classList.toggle("hide");
-            main.style.opacity = 1;
         });
     });
 
