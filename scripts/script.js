@@ -66,66 +66,77 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // CLOCK
     let hours = 8,
-    minutes = 30;
+        minutes = 0;
 
     const buildClock = () => {
-
         clockHours.querySelectorAll(".hour").forEach(item => {item.remove()});
-        clockMinutes.querySelectorAll(".minute").forEach(item => {item.remove()});
-
-        for (let i = 0; i <= 24; i++) {
-            if (i < 24) {
+        for (let i = -2; i <= 26; i++) {
+            if (i == -2) {
+                clockHours.innerHTML += `<div class="hour">22</div>`;
+            }
+            if (i == -1) {
+                clockHours.innerHTML += `<div class="hour">23</div>`;
+            }
+            if (i > -1 && i < 24) {
                 clockHours.innerHTML += `<div class="hour">${i < 10 ? "0" + i : i}</div>`;
             }
-            else {
+            if (i == 24) {
                 clockHours.innerHTML += `<div class="hour">00</div>`;
             }
+            if (i == 25) {
+                clockHours.innerHTML += `<div class="hour">01</div>`;
+            }
+            if (i == 26) {
+                clockHours.innerHTML += `<div class="hour">02</div>`;
+            }
         }
 
-        for (let i = 0; i <= 60; i++) {
-            if (i < 60) {
+        clockMinutes.querySelectorAll(".minute").forEach(item => {item.remove()});
+        for (let i = -2; i <= 62; i++) {
+            if (i == -2) {
+                clockMinutes.innerHTML += `<div class="minute">58</div>`;
+            }
+            if (i == -1) {
+                clockMinutes.innerHTML += `<div class="minute">59</div>`;
+            }
+            if (i > -1 && i < 60) {
                 clockMinutes.innerHTML += `<div class="minute">${i < 10 ? "0" + i : i}</div>`;
             }
-            else {
+            if (i == 60) {
                 clockMinutes.innerHTML += `<div class="minute">00</div>`;
+            }
+            if (i == 61) {
+                clockMinutes.innerHTML += `<div class="minute">01</div>`;
+            }
+            if (i == 62) {
+                clockMinutes.innerHTML += `<div class="minute">02</div>`;
             }
         }
 
-        // clockHours.scrollTo(0,hours * 50);
-        // clockMinutes.scrollTo(0,minutes * 50);
-
-        clockHours.scrollTo(0,400);
-        clockMinutes.scrollTo(0,1500);
+        clockHours.scrollTo(0,450);
+        clockMinutes.scrollTo(0,50);
     }
 
     buildClock();
 
-
-
     clockHours.addEventListener("scroll", () => {
-        hours = Math.floor(clockHours.scrollTop / 50);
-        //console.log(hours);
-        if (hours == 24) {
-            hours = 0;
-            clockHours.scrollTo(0,0);
+        hours = Math.floor(clockHours.scrollTop / 50 - 1);
+        if (hours == -1) {
+            clockHours.scrollTo(0,1250);
         }
-        // if (clockHours.scrollTop == 0) {
-        //     hours = 24;
-        //     clockHours.scrollTo(0,1200);
-        // }
+        if (hours == 24) {
+            clockHours.scrollTo(0,50);
+        }
     });
 
     clockMinutes.addEventListener("scroll", () => {
-        minutes = Math.floor(clockMinutes.scrollTop / 50);
-        //console.log(minutes);
-        if (clockMinutes.scrollTop == 3000) {
-            buildClock();
-            clockMinutes.scrollTo(0,0);
+        minutes = Math.floor(clockMinutes.scrollTop / 50 - 1);
+        if (minutes == -1) {
+            clockMinutes.scrollTo(0,3050);
         }
-        // if (clockMinutes.scrollTop == 0) {
-        //     //buildClock();
-        //     clockMinutes.scrollTo(0,2999);
-        // }
+        if (minutes == 60) {
+            clockMinutes.scrollTo(0,50);
+        }
     });
 
     const buildTask = (clickedDay) => {
@@ -189,7 +200,6 @@ document.addEventListener("DOMContentLoaded", () => {
     
                 task.addEventListener("click", (event) => {
                     event.preventDefault();
-                    console.log("task clicked");
                     if (event.target.classList.contains("taskName") || event.target.classList.contains("taskColor") || event.target.classList.contains("taskDate") || event.target.classList.contains("taskTime")) {
                         event.target.parentElement.parentElement.classList.toggle("taskExpanded");
                     }
@@ -207,7 +217,6 @@ document.addEventListener("DOMContentLoaded", () => {
                             localStorage.removeItem(`task${id}`);
                             updateLocalData();
                             buildCalendar(monthIndex);
-                            console.log(localData);
                         }
                     });
                 });
@@ -264,7 +273,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
         set__task__name.classList.toggle("hide");
         set__task__time.classList.toggle("hide");
-        buildClock();
     });
 
     task__color__back__button.addEventListener("click", () => {
@@ -273,7 +281,8 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     task__time__OK__button.addEventListener("click", () => {
-        object.time = hours + ":" + minutes;
+        object.time = (hours < 10 ? "0" + hours : hours) + ":" + (minutes < 10 ? "0" + minutes : minutes);
+        buildClock();
 
         set__task__time.classList.toggle("hide");
         set__task__color.classList.toggle("hide");
@@ -417,9 +426,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     m = m < 10 ? "0" + m : m;
         
                     let clickedDay = `${dd}.${m}.${y}`;
-    
-                    console.log(clickedDay);
-                
+                    
                     object.date = clickedDay;
         
                     buildTask(clickedDay);

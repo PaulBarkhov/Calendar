@@ -28,6 +28,10 @@ header {
     z-index: 10;
 }
 
+    header div {
+        background: white;
+    }
+
     header button {
         border: none;
         font-size: 30px;
@@ -162,8 +166,9 @@ a {
 
     
     .taskBox {
+        
         height: 300px;
-        padding-top: 8px;
+        padding-top: 50px;
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -288,20 +293,44 @@ a {
 
         font-size: 40px;
         font-weight: 700;
+
+        position: relative;
     }
 
         .clock .hours {
+                        
             padding: 0;
             background-color: rgba(255, 255, 255, 0.315);
             border-radius: 5px;
             text-align: center;
-            height: 50px;
+            height: 150px;
             overflow-y: scroll;
             scroll-snap-type: y mandatory;
 
             -ms-overflow-style: none;  /* Hide scrollbar for IE and Edge */
             scrollbar-width: none;  /*Hide scrollbar for Firefox */
         }
+
+        /* .clock .hours::before {
+            content: "";
+            position: sticky;
+
+            display: inline-block;
+            width: 100%;
+            height: 20%;
+            background-color: white;
+        }
+
+        .clock .hours::after {
+            content: "";
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            display: inline-block;
+            width: 100%;
+            height: 15%;
+            background-color: white;
+        } */
 
         .clock .hours::-webkit-scrollbar {
             display: none;
@@ -318,7 +347,7 @@ a {
             background-color: rgba(255, 255, 255, 0.315);
             border-radius: 5px;
             text-align: center;
-            height: 50px;
+            height: 150px;
             overflow-y: scroll;
             scroll-snap-type: y mandatory;
 
@@ -336,6 +365,39 @@ a {
             padding: 0;
         }
 
+
+    .clock .coverTop {
+        position: absolute;
+        top: 8px;
+
+        
+        background: rgb(255,255,255);
+        background: -moz-linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 50%, rgba(255,255,255,0) 100%);
+        background: -webkit-linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 50%, rgba(255,255,255,0) 100%);
+        background: linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 50%, rgba(255,255,255,0) 100%);
+        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#ffffff",endColorstr="#ffffff",GradientType=1); 
+        
+        width: 100%;
+        height: 15%;
+    }
+    .clock .coverBottom {
+        position: absolute;
+
+
+
+        background: rgb(255,255,255);
+        background: -moz-linear-gradient(0deg, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 50%, rgba(255,255,255,0) 100%);
+        background: -webkit-linear-gradient(0deg, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 50%, rgba(255,255,255,0) 100%);
+        background: linear-gradient(0deg, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 50%, rgba(255,255,255,0) 100%);
+        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#ffffff",endColorstr="#ffffff",GradientType=1); 
+
+
+
+        left: 0;
+        bottom: 2px;
+        width: 100%;
+        height: 12%;
+    }
 
 /* TASKS */
 .header { grid-area: header;}
