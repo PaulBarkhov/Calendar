@@ -293,7 +293,6 @@ a {
         flex-direction: row;
         justify-content: space-between;
         align-items: center;
-        margin: 15px;
 
         font-size: 70px;
         font-weight: 400;
@@ -307,7 +306,7 @@ a {
             background-color: rgba(236, 236, 236, 0.315);
             border-radius: 5px;
             text-align: center;
-            height: 170px;
+            height: 155px;
             overflow-y: scroll;
             scroll-snap-type: y mandatory;
 
@@ -324,7 +323,7 @@ a {
             height: 80px;
             font-weight: 400;
             padding: 0;
-            font-size: 70px;
+            font-size: 60px;
             text-align: center;
 
         }
@@ -334,7 +333,7 @@ a {
             background-color: rgba(236, 236, 236, 0.315);
             border-radius: 5px;
             text-align: center;
-            height: 170px;
+            height: 155px;
             overflow-y: scroll;
             scroll-snap-type: y mandatory;
 
@@ -351,7 +350,7 @@ a {
             height: 80px;
             font-weight: 400;
             padding: 0;
-            font-size: 70px;
+            font-size: 60px;
         }
 
 
@@ -592,6 +591,7 @@ a {
 /* CALENDAR */
 
 .calendar__wrapper {
+    position: relative;
     width: 100%;
 }
 .calendar {
@@ -618,7 +618,6 @@ a {
   }
 
 .calendarBody {
-    overflow: hidden;
     display: flex;
     width: 300%;
 }
@@ -638,22 +637,25 @@ a {
 
 
 .block {
+    position: relative;
     /* transform: translate(-100%); */
     width: 100%;    
     scroll-snap-align: start;
 }
 
+.block h2 {
+
+}
+
 .calendar__weekdays {
+    position: absolute;
     width: 100%;
-    max-width: 100vmin;
     background-color: rgba(165, 42, 42, 0.459);
-    position: fixed;
-    top: 60px;
     padding: 3px 0px 7px;
     display: flex;
     flex-direction: row;
     text-align: center;
-    margin-top: 5px;
+    margin-top: 60px;
 }
 
 .calendar__weekdays div {
@@ -669,7 +671,7 @@ a {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    margin-top: 65px;
+    margin-top: 55px;
 }
 
 .days div {

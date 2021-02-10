@@ -218,12 +218,16 @@ document.addEventListener("DOMContentLoaded", () => {
                             updateLocalData();
                         }
                     });
-                    event.target.parentElement.parentElement.parentElement.classList.remove("taskExpanded");
-                    event.target.parentElement.parentElement.parentElement.addEventListener("transitionend", () => {
-                        event.target.parentElement.parentElement.parentElement.style.transition = "transform .3s linear";
-                        event.target.parentElement.parentElement.parentElement.style.transform = "translate(-120%)";
-                        event.target.parentElement.parentElement.parentElement.addEventListener("transitionend", () => {
-                            buildCalendar(monthIndex);
+                    const parent = event.target.parentElement.parentElement.parentElement;
+                    parent.classList.remove("taskExpanded");
+                    parent.addEventListener("transitionend", () => {
+                        parent.style.transition = ".3s linear";
+                        parent.style.transform = "translate(-120%)";
+                        parent.addEventListener("transitionend", () => {
+                            parent.style.maxHeight = "0px";
+                            parent.addEventListener("transitionend", () => {
+                                buildCalendar(monthIndex);
+                            });
                         });
                     });
                 });
