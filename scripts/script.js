@@ -113,29 +113,29 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         }
 
-        clockHours.scrollTo(0,450);
-        clockMinutes.scrollTo(0,50);
+        clockHours.scrollTo(0,720);
+        clockMinutes.scrollTo(0,80);
     }
 
     buildClock();
 
     clockHours.addEventListener("scroll", () => {
-        hours = Math.floor(clockHours.scrollTop / 50 - 1);
+        hours = Math.floor(clockHours.scrollTop / 80 - 1);
         if (hours == -1) {
-            clockHours.scrollTo(0,1250);
+            clockHours.scrollTo(0,1920);
         }
         if (hours == 24) {
-            clockHours.scrollTo(0,50);
+            clockHours.scrollTo(0,80);
         }
     });
 
     clockMinutes.addEventListener("scroll", () => {
-        minutes = Math.floor(clockMinutes.scrollTop / 50 - 1);
+        minutes = Math.floor(clockMinutes.scrollTop / 80 - 1);
         if (minutes == -1) {
-            clockMinutes.scrollTo(0,3050);
+            clockMinutes.scrollTo(0,4800);
         }
         if (minutes == 60) {
-            clockMinutes.scrollTo(0,50);
+            clockMinutes.scrollTo(0,80);
         }
     });
 
@@ -211,13 +211,20 @@ document.addEventListener("DOMContentLoaded", () => {
                     }
                 });        
 
-                task.querySelector(".delete").addEventListener("click", () => {
+                task.querySelector(".delete").addEventListener("click", (event) => {
                     localData.forEach(({id}) => {
                         if (id == task.querySelector(".id").innerHTML) {
                             localStorage.removeItem(`task${id}`);
                             updateLocalData();
-                            buildCalendar(monthIndex);
                         }
+                    });
+                    event.target.parentElement.parentElement.parentElement.classList.remove("taskExpanded");
+                    event.target.parentElement.parentElement.parentElement.addEventListener("transitionend", () => {
+                        event.target.parentElement.parentElement.parentElement.style.transition = "transform .3s linear";
+                        event.target.parentElement.parentElement.parentElement.style.transform = "translate(-120%)";
+                        event.target.parentElement.parentElement.parentElement.addEventListener("transitionend", () => {
+                            buildCalendar(monthIndex);
+                        });
                     });
                 });
             }
@@ -266,7 +273,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     task__time__OK__button.addEventListener("click", () => {
         object.time = (hours < 10 ? "0" + hours : hours) + ":" + (minutes < 10 ? "0" + minutes : minutes);
-        buildClock();
 
         add__task__window__wrapper.scrollBy((add__task__window__wrapper.scrollWidth / 3), 0)
     });
@@ -314,7 +320,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const calendar = document.querySelector(".calendar"),
           calendarBody = document.querySelector(".calendarBody"),
           months = ["Januar", "Februar", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-
+    
+          let clickedDay;
 
     function buildCalendar (n) {
         updateLocalData();
@@ -386,24 +393,49 @@ document.addEventListener("DOMContentLoaded", () => {
                 index += 7;
             }
 
+            days.querySelectorAll(".day").forEach(item => {
+                let itemDay = item.innerHTML < 10 ? "0" + item.innerHTML : item.innerHTML;
+                    itemMonth = d.getMonth() + 1;
+                    itemYear = d.getFullYear();
+
+                    if (item.classList.contains("calendar__previousMonthDay")) {
+                        itemMonth--;
+                    }
+                    if (item.classList.contains("calendar__nextMonthDay")) {
+                        itemMonth++;
+                    }
+
+                    itemMonth = itemMonth < 10 ? "0" + itemMonth : itemMonth;
+
+                if (clickedDay == (`${itemDay}.${itemMonth}.${itemYear}`)) {
+                    item.classList.add("calendar__activeDay");
+                }
+            });
+
+
+    
+
             days.addEventListener("click", (event) => {
                 let target = event.target;
         
                 if (!target.classList.contains("day")) {
                     target = target.querySelector(".day");
                 }
-                if (target.classList.contains("day")) {
-                
+                if (target.classList.contains("day")) {                
                     let dd = +target.innerHTML < 10 ? "0" + target.innerHTML : target.innerHTML,
                         m = d.getMonth() + 1, 
                         y = d.getFullYear();
         
+                    // if (target.classList.contains("calendar__previousMonthDay")) {
+                    //     m = d.getMonth();
+                    // }
+
                     if (target.classList.contains("calendar__previousMonthDay")) {
-                        m = d.getMonth();
+                        m--;
                     }
         
                     if (target.classList.contains("calendar__nextMonthDay")) {
-                        m = d.getMonth() + 2;
+                        m++;
                     }
         
                     if (m == 0) {
@@ -418,12 +450,28 @@ document.addEventListener("DOMContentLoaded", () => {
         
                     m = m < 10 ? "0" + m : m;
         
-                    let clickedDay = `${dd}.${m}.${y}`;
-                    
+                    clickedDay = `${dd}.${m}.${y}`;
+
                     object.date = clickedDay;
-        
+
                     buildTask(clickedDay);
-                
+
+                    if (target.classList.contains("calendar__previousMonthDay")) {
+                        calendar.scrollTo(0,0);
+                        calendar.addEventListener("transitionend", () => {
+                            monthIndex--;
+                            buildCalendar(monthIndex);
+                        });
+                    }
+
+                    if (target.classList.contains("calendar__nextMonthDay")) {
+                        calendar.scrollTo(calendar.scrollWidth,0);
+                        calendar.addEventListener("transitionend", () => {
+                            monthIndex++;
+                            buildCalendar(monthIndex);
+                        });
+                    }
+        
                     days.querySelectorAll("p").forEach(item => {
                         item.classList.remove("calendar__activeDay");
                     })
@@ -489,6 +537,5 @@ document.addEventListener("DOMContentLoaded", () => {
             buildCalendar(monthIndex);
         }
     });         
-
 
 });  
